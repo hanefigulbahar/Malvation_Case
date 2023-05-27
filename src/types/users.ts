@@ -3,6 +3,8 @@ export interface Welcome {
 }
 
 export interface User {
+  role: string;
+  isActive: boolean;
   id: number;
   firstName: string;
   lastName: string;

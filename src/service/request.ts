@@ -22,12 +22,9 @@ export function request(
           .then(console.log);
         break;
       case "DELETE":
-        fetch(url + id, {
+        return fetch(url, {
           method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then(console.log);
-        break;
+        }).then((res) => res.status);
     }
   } catch (error) {
     console.log(error);
