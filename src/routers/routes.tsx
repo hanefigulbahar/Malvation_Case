@@ -3,6 +3,7 @@ import { HomePage } from "../pages/HomePage";
 import { Login } from "../pages/Login";
 import ErrorPage from "../pages/Error";
 import Layout from "../pages/Layout";
+import UserDetail from "../pages/UserDetail";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "users/:id",
+        element: <UserDetail />,
       },
     ],
   },

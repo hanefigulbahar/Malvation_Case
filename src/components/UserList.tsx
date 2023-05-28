@@ -2,7 +2,7 @@ import { request } from "../service/request";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 import { allData } from "../features/usersSlice";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const UserList = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +21,6 @@ const UserList = () => {
     deleteStatus === 200
       ? toast.success("Deletion successful")
       : toast.error("Deletion failed");
-
     fetchData();
   };
 
@@ -40,13 +39,15 @@ const UserList = () => {
         <tbody>
           {allUsers?.map((data) => (
             <tr key={data.id}>
-              <td>
-                {data.firstName} {data.lastName}
-              </td>
-              <td>{data.email}</td>
-              <td>{data.phone}</td>
-              <td>{data.role}</td>
-              {data.isActive ? <td>Yes</td> : <td>No</td>}
+              <a href={"users/" + data.id.toLocaleString()}>
+                <td>
+                  {data.firstName} {data.lastName}
+                </td>
+                <td>{data.email}</td>
+                <td>{data.phone}</td>
+                <td>{data.role}</td>
+                {data.isActive ? <td>Yes</td> : <td>No</td>}
+              </a>
               <td>
                 <button
                   onClick={() => deleteUserHandle(data.id)}

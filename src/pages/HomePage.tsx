@@ -8,12 +8,8 @@ import UserList from "../components/UserList";
 
 function HomePage() {
   const dispatch = useAppDispatch();
-  const allUsers = useAppSelector((state) => state.allData.users);
-
-  const autUserStatus = useAppSelector((state) => state.autUser.isAut);
-
-  console.log(allUsers);
-
+  const autUserStatus = useAppSelector((state) => state.autUser.data.isAut);
+  console.log(autUserStatus);
   useEffect(() => {
     const fetchData = async () => {
       const users = await request("http://localhost:3000/users", "GET");
@@ -24,7 +20,7 @@ function HomePage() {
 
   return (
     <>
-      {autUserStatus === "true" ? (
+      {autUserStatus === true ? (
         <>
           <Toaster position="top-right" />
           <UserList />

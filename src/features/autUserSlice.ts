@@ -1,21 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const localUser = window.localStorage.getItem("user") || null;
-const localUserStatus =
-  window.localStorage.getItem("status") || "false" || null;
-
 interface User {
-  user: {
-    localUser: string | null;
+  data: {
+    user: string | null;
+    isAut: boolean | null;
   };
-  isAut: string | null;
 }
-
+const localUser = window.localStorage.getItem("user");
+const localStatus = JSON.parse(window.localStorage.getItem("user") || "false");
 const initialState: User = {
-  user: {
-    localUser,
+  data: {
+    user: localUser,
+    isAut: localStatus ? localStatus.isAut : false,
   },
-  isAut: localUserStatus,
 };
 
 const autUserSlice = createSlice({
@@ -23,14 +20,12 @@ const autUserSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action) => {
-      state.user = action.payload;
-      state.isAut = "true";
-    },
-    userAutStatus: (state, action) => {
-      state.isAut = action.payload;
+      state.data.user = action.payload;
+      state.data.isAut = true;
+      window.localStorage.setItem("user", JSON.stringify(state.data));
     },
   },
 });
 
 export default autUserSlice.reducer;
-export const { loginUser, userAutStatus } = autUserSlice.actions;
+export const { loginUser } = autUserSlice.actions;

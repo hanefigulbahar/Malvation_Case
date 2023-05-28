@@ -1,11 +1,17 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { request } from "../service/request";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { useEffect } from "react";
-import { allData } from "../features/usersSlice";
+import { useAppDispatch } from "../store/hooks";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../features/autUserSlice";
 import toast, { Toaster } from "react-hot-toast";
+import { request } from "../service/request";
+import { loginUser } from "../features/autUserSlice";
+
+interface ILogin {
+  accessToken: string;
+  user: {
+    email: string;
+    password: string;
+  };
+}
 
 type Inputs = {
   email: string;
@@ -13,20 +19,8 @@ type Inputs = {
 };
 
 export const Login = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const allUsers = useAppSelector((state) => state.allData.users);
-  const autUser = useAppSelector((state) => state.autUser.user);
-  const autUserStatus = useAppSelector((state) => state.autUser.isAut);
-  console.log(autUser, autUserStatus);
-  console.log(allUsers);
-  useEffect(() => {
-    const fetchData = async () => {
-      const users = await request("http://localhost:3000/users", "GET");
-      dispatch(allData(users));
-    };
-    fetchData();
-  }, [dispatch]);
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -35,35 +29,24 @@ export const Login = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (
-      allUsers?.find((res) => res.email === data.email) &&
-      allUsers?.find((res) => res.password === data.password)
-    ) {
-      window.localStorage.setItem("user", JSON.stringify(data));
-      window.localStorage.setItem("status", JSON.stringify(true));
-      dispatch(loginUser(data));
-      await toast.promise(
-        new Promise((resolve) => {
-          // authentication process sumilations
-          setTimeout(() => {
-            resolve("Successfully logged in");
-          }, 2000);
-        }),
-        {
-          loading: "Logon process in progress",
-          success: (result: unknown) => `Welcome: ${result}`,
-          error: "An error occurred during the login process!",
-        }
-      );
-      navigate("/");
+    const login: ILogin = await request("http://localhost:3000/login", "POST", {
+      email: data.email,
+      password: data.password,
+    });
+    if (!login.accessToken) {
+      toast.error("An error occurred during the login process!");
     } else {
-      toast.error("Email or password is not valid");
+      toast.success("Successfully logged in");
+      dispatch(loginUser(login));
+      navigate("/");
     }
   };
   return (
-    <>
+    <div className="h-full w-full flex justify-center items-center">
       <Toaster position="top-right" reverseOrder={false} />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="border border-red-500 w-1/3 h-1/3 m-auto flex flex-col justify-center items-center gap-10 "
+        onSubmit={handleSubmit(onSubmit)}>
         <input
           placeholder="example@mail.com"
           {...register("email", { required: true })}
@@ -77,6 +60,6 @@ export const Login = () => {
         {errors.password && <span>This field is required</span>}
         <input type="submit" />
       </form>
-    </>
+    </div>
   );
 };

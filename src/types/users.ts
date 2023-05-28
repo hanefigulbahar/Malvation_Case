@@ -1,7 +1,9 @@
 export interface Welcome {
   users: User[] | null;
 }
-
+export interface SelectedUser {
+  user: User | null;
+}
 export interface User {
   role: string;
   isActive: boolean;
@@ -32,6 +34,7 @@ export interface User {
   ein: string;
   ssn: string;
   userAgent: string;
+  active: true;
 }
 
 export interface Address {
