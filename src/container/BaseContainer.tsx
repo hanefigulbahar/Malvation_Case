@@ -9,16 +9,18 @@ const BaseContainer = ({ children }: IBaseContainer) => {
   console.log(location.pathname.length);
   const goBackGHandle = () => window.history.back();
   return (
-    <div className="flex flex-col gap-5 border border-gray-100 m-5 p-10 w-full shadow-md rounded-xl bg-gray-50">
-      <div className="border border-gray-100 p-6 bg-white rounded-xl shadow-md">
+    <div className="flex flex-col gap-5 border border-gray-100 m-5 p-10 w-full shadow-md rounded-xl bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+      <div className="border border-gray-100 p-6 bg-white rounded-xl shadow-md dark:bg-gray-800 dark:border-gray-700">
         {location.pathname.length <= 1 ? (
           <div className="flex justify-start items-center gap-2 p-3 rounded-lg">
-            <p className="text-2xl font-semibold text-gray-500">Users</p>
+            <p className="text-2xl font-semibold text-gray-500 dark:text-gray-50">
+              Users
+            </p>
           </div>
         ) : (
           <button
             onClick={goBackGHandle}
-            className="flex justify-center items-center gap-2 hover:bg-gray-50 p-3 rounded-lg">
+            className="flex justify-center items-center gap-2 hover:bg-gray-50 p-3 rounded-lg dark:hover:bg-gray-700 dark:text-gray-50">
             <div className="text-xl">
               <BsArrowLeft />
             </div>
@@ -26,7 +28,7 @@ const BaseContainer = ({ children }: IBaseContainer) => {
           </button>
         )}
       </div>
-      <div className="border border-gray-100 p-10 bg-white rounded-xl shadow-md">
+      <div className="border border-gray-100 p-10 bg-white rounded-xl shadow-md dark:bg-gray-800 dark:border-gray-800">
         {children}
       </div>
     </div>

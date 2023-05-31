@@ -6,10 +6,8 @@ export interface SelectedUser {
 }
 
 export interface AuthUser {
-  user: {
-    accessToken: string | null;
-    user: User | null;
-  };
+  accessToken: string | null;
+  user: User | null;
 }
 export interface User {
   role: string;

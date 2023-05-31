@@ -1,15 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AuthUser } from "../types/users";
 
-const { user } = JSON.parse(
+const storeUser = JSON.parse(
   window.localStorage.getItem("user") || ""
 ) as AuthUser;
 
 const initialState: AuthUser = {
-  user: {
-    accessToken: user.accessToken,
-    user: user.user,
-  },
+  accessToken: storeUser.accessToken,
+  user: storeUser.user,
 };
 
 const autUserSlice = createSlice({

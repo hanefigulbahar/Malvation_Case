@@ -28,6 +28,7 @@ export function request(url: string, method: string, data?: any) {
             password: data.password,
           }),
         }).then((res) => res.json());
+
       case "DELETE":
         return fetch(url, {
           method: "DELETE",

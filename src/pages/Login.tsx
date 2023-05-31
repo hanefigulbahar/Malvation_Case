@@ -35,11 +35,10 @@ export const Login = () => {
       email: data.email,
       password: data.password,
     });
-
+    console.log(login);
     if (!login.accessToken) {
       toast.error("An error occurred during the login process!");
     } else {
-      console.log(login);
       dispatch(loginUser(login));
       navigate("/");
     }

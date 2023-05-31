@@ -8,7 +8,7 @@ import UserList from "../components/UserList";
 
 function HomePage() {
   const dispatch = useAppDispatch();
-  const autUserStatus = useAppSelector((state) => state.autUser.isAut);
+  const autUserToken = useAppSelector((state) => state.autUser.accessToken);
 
   const fetchData = async () => {
     const users = await request("http://localhost:3000/users", "GET");
@@ -20,7 +20,7 @@ function HomePage() {
 
   return (
     <>
-      {autUserStatus === true ? (
+      {autUserToken ? (
         <div className="flex justify-center items-center w-full">
           <Toaster position="top-right" reverseOrder={false} />
           <UserList />

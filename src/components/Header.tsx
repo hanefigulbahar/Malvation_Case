@@ -50,7 +50,7 @@ const Header = () => {
                   <span className="sr-only">Open user menu</span>
                   <img
                     className="w-8 h-8 rounded-full"
-                    src={user.user?.image}
+                    src={user?.image}
                     alt="user photo"
                   />
                 </button>
@@ -63,10 +63,10 @@ const Header = () => {
                   id="user-dropdown">
                   <div className="px-4 py-3">
                     <span className="block text-sm text-gray-900 dark:text-white">
-                      {user.user?.firstName + " " + user.user?.lastName}
+                      {user?.firstName + " " + user?.lastName}
                     </span>
                     <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-                      {user.user?.email}
+                      {user?.email}
                     </span>
                   </div>
                   <ul className="py-2" aria-labelledby="user-menu-button">

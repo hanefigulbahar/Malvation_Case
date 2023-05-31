@@ -9,6 +9,7 @@ import {
   TbSunHigh,
 } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
+import { themeChanger } from "../utils/themaChanger";
 
 const SideBar = () => {
   const theme = useAppSelector((state) => state.theme.theme);
@@ -28,15 +29,7 @@ const SideBar = () => {
   };
 
   useEffect(() => {
-    if (
-      localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    themeChanger();
   }, []);
 
   const themeChangeHandle = (value: boolean) => {
