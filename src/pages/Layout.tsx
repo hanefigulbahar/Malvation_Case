@@ -1,15 +1,20 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
+import SideBar from "../components/SideBar";
 import Footer from "../components/Footer";
+
+import Header from "../components/Header";
+import BaseContainer from "../container/BaseContainer";
 
 const Layout = () => {
   return (
-    <div>
-      <div className="flex w-full">
-        <Header />
-        <Outlet />
+    <div className="dark:bg-gray-600">
+      <Header />
+      <div className="flex">
+        <SideBar />
+        <BaseContainer>
+          <Outlet />
+        </BaseContainer>
       </div>
-
       <Footer />
     </div>
   );
