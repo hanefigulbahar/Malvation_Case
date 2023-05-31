@@ -16,7 +16,7 @@ type Inputs = {
 
 const UserDetail = () => {
   const dispatch = useAppDispatch();
-  const autUserToken = useAppSelector((state) => state.autUser.accessToken);
+  const authUserToken = useAppSelector((state) => state.autUser.accessToken);
 
   const selectedUser = useAppSelector((state) => state.selectedUser.user);
   const location = useLocation();
@@ -53,7 +53,7 @@ const UserDetail = () => {
 
   return (
     <>
-      {autUserToken ? (
+      {authUserToken ? (
         <form className="w-full p-10 " onSubmit={handleSubmit(onSubmit)}>
           <div className="relative z-0 w-full mb-6 group ">
             <input
