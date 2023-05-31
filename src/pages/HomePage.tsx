@@ -8,23 +8,23 @@ import UserList from "../components/UserList";
 
 function HomePage() {
   const dispatch = useAppDispatch();
-  const autUserStatus = useAppSelector((state) => state.autUser.data.isAut);
-  console.log(autUserStatus);
+  const autUserStatus = useAppSelector((state) => state.autUser.isAut);
+
+  const fetchData = async () => {
+    const users = await request("http://localhost:3000/users", "GET");
+    dispatch(allData(users));
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const users = await request("http://localhost:3000/users", "GET");
-      dispatch(allData(users));
-    };
     fetchData();
   }, [dispatch]);
 
   return (
     <>
       {autUserStatus === true ? (
-        <>
-          <Toaster position="top-right" />
+        <div className="flex justify-center items-center w-full">
+          <Toaster position="top-right" reverseOrder={false} />
           <UserList />
-        </>
+        </div>
       ) : (
         <Navigate to="/login" replace={true} />
       )}
