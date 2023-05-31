@@ -4,6 +4,13 @@ export interface Welcome {
 export interface SelectedUser {
   user: User | null;
 }
+
+export interface AuthUser {
+  user: {
+    accessToken: string | null;
+    user: User | null;
+  };
+}
 export interface User {
   role: string;
   isActive: boolean;
