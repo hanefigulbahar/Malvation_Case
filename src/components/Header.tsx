@@ -3,8 +3,8 @@ import { useAppSelector } from "../store/hooks";
 
 const Header = () => {
   const [navbarDropdown, setNavbarDropdown] = useState(false);
-  const { user } = useAppSelector((state) => state.autUser.user);
-
+  const authUser = useAppSelector((state) => state.autUser.user);
+  console.log(authUser);
   const navbarDropdownHandle = () => {
     setNavbarDropdown(!navbarDropdown);
   };
@@ -50,7 +50,7 @@ const Header = () => {
                   <span className="sr-only">Open user menu</span>
                   <img
                     className="w-8 h-8 rounded-full"
-                    src={user?.image}
+                    src={authUser?.image}
                     alt="user photo"
                   />
                 </button>
@@ -63,10 +63,10 @@ const Header = () => {
                   id="user-dropdown">
                   <div className="px-4 py-3">
                     <span className="block text-sm text-gray-900 dark:text-white">
-                      {user?.firstName + " " + user?.lastName}
+                      {authUser?.firstName + " " + authUser?.lastName}
                     </span>
                     <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-                      {user?.email}
+                      {authUser?.email}
                     </span>
                   </div>
                   <ul className="py-2" aria-labelledby="user-menu-button">

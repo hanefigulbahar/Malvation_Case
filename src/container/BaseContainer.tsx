@@ -1,12 +1,13 @@
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
+import Pagination from "../components/Pagination";
 interface IBaseContainer {
   children: React.ReactNode;
 }
 const BaseContainer = ({ children }: IBaseContainer) => {
   const location = useLocation();
-  console.log(location.pathname.length);
+
   const goBackGHandle = () => window.history.back();
   return (
     <div className="flex flex-col gap-5 border border-gray-100 m-5 p-10 w-full shadow-md rounded-xl bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
@@ -31,6 +32,7 @@ const BaseContainer = ({ children }: IBaseContainer) => {
       <div className="border border-gray-100 p-10 bg-white rounded-xl shadow-md dark:bg-gray-800 dark:border-gray-800">
         {children}
       </div>
+      {location.pathname.length <= 1 && <Pagination />}
     </div>
   );
 };

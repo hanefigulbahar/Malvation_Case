@@ -9,9 +9,13 @@ const UserList = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const allUsers = useAppSelector((state) => state.allData.users);
+  const page = useAppSelector((state) => state.pagination.page);
 
   const fetchData = async () => {
-    const users = await request("http://localhost:3000/users", "GET");
+    const users = await request(
+      `http://localhost:3000/users?_page=${page.toLocaleString()}`,
+      "GET"
+    );
     dispatch(allData(users));
   };
 
