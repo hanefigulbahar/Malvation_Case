@@ -3,6 +3,7 @@ import usersSlice from "../features/usersSlice";
 import autUserSlice from "../features/autUserSlice";
 import selecredUserSlice from "../features/selecredUserSlice";
 import themeSlice from "../features/themeSlice";
+import paginationSlice from "../features/paginationSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     autUser: autUserSlice,
     selectedUser: selecredUserSlice,
     theme: themeSlice,
+    pagination: paginationSlice,
   },
 });
 

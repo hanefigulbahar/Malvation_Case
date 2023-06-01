@@ -9,22 +9,29 @@ import UserList from "../components/UserList";
 function HomePage() {
   const dispatch = useAppDispatch();
   const authUserToken = useAppSelector((state) => state.autUser.accessToken);
+  const page = useAppSelector((state) => state.pagination.page);
 
-  const fetchData = async () => {
-    const users = await request("http://localhost:3000/users", "GET");
+  const fetchData = async (page: number) => {
+    const users = await request(
+      `http://localhost:3000/users?_page=${page}`,
+      "GET"
+    );
+
     dispatch(allData(users));
   };
   useEffect(() => {
-    fetchData();
-  }, [dispatch]);
+    fetchData(page);
+  }, [dispatch, page]);
 
   return (
     <>
       {authUserToken ? (
-        <div className="flex justify-center items-center w-full">
-          <Toaster position="top-right" reverseOrder={false} />
-          <UserList />
-        </div>
+        <>
+          <div className="flex justify-center items-center w-full">
+            <Toaster position="top-right" reverseOrder={false} />
+            <UserList />
+          </div>
+        </>
       ) : (
         <Navigate to="/login" replace={true} />
       )}
