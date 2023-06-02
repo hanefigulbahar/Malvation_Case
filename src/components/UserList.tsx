@@ -4,22 +4,22 @@ import { allData } from "../features/usersSlice";
 import { toast } from "react-hot-toast";
 import { BsTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { isLoading } from "../features/loadingSlice";
+import { useEffect } from "react";
 
 const UserList = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const allUsers = useAppSelector((state) => state.allData.users);
-  const page = useAppSelector((state) => state.pagination.page);
 
   const fetchData = async () => {
-    const users = await request(
-      `http://localhost:3000/users?_page=${page.toLocaleString()}`,
-      "GET"
-    );
+    const users = await request(`http://localhost:3000/users`, "GET");
     dispatch(allData(users));
+    dispatch(isLoading(false));
   };
 
   const deleteUserHandle = async (id: number) => {
+    dispatch(isLoading(true));
     const deleteStatus = await request(
       `http://localhost:3000/users/${id}`,
       "DELETE"
@@ -33,6 +33,10 @@ const UserList = () => {
   const linkHandler = (id: string) => {
     navigate(`users/${id}`);
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -63,11 +67,11 @@ const UserList = () => {
           {allUsers?.map((data) => (
             <tr
               key={data.id}
-              onClick={() => linkHandler(data.id.toLocaleString())}
-              className="bg-white cursor-pointer border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              className="bg-white  border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
               <th
+                onClick={() => linkHandler(data.id.toLocaleString())}
                 scope="row"
-                className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                className="flex cursor-pointer items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                 <img
                   className="w-10 h-10 rounded-full"
                   src={data.image}
@@ -80,7 +84,6 @@ const UserList = () => {
               <td className="px-6 py-4">{data.email}</td>
               <td className="px-6 py-4">{data.phone}</td>
               <td className="px-6 py-4">{data.role.toLocaleUpperCase()}</td>
-
               <td className="px-6 py-4">
                 {data.active === true ? (
                   <div className="flex items-center">

@@ -17,7 +17,9 @@ export function request(url: string, method: string, data?: any) {
             role: data.role,
             active: data.active,
           }),
-        }).then((res) => res.status);
+        })
+          .then((res) => res.status)
+          .catch((err) => err);
 
       case "POST":
         return fetch(url, {
@@ -27,12 +29,16 @@ export function request(url: string, method: string, data?: any) {
             email: data.email,
             password: data.password,
           }),
-        }).then((res) => res.json());
+        })
+          .then((res) => res.json())
+          .catch((err) => err);
 
       case "DELETE":
         return fetch(url, {
           method: "DELETE",
-        }).then((res) => res.status);
+        })
+          .then((res) => res.status)
+          .catch((err) => err);
     }
   } catch (error) {
     console.log(error);
