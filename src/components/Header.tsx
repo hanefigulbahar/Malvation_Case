@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useAppSelector } from "../store/hooks";
 
 const Header = () => {
-  const [navbarDropdown, setNavbarDropdown] = useState(false);
   const authUser = useAppSelector((state) => state.autUser.user);
-  console.log(authUser);
+  const [navbarDropdown, setNavbarDropdown] = useState(false);
+
   const navbarDropdownHandle = () => {
     setNavbarDropdown(!navbarDropdown);
   };
-
+  console.log(authUser);
   return (
     <nav className="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
