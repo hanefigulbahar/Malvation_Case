@@ -6,7 +6,6 @@ import Header from "../components/Header";
 import BaseContainer from "../container/BaseContainer";
 
 const Layout = () => {
-  console.log("render Layout");
   return (
     <div className="dark:bg-gray-600">
       <Header />
