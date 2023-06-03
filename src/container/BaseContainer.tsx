@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import Pagination from "../components/Pagination";
-import Loading from "../components/Loading";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { isLoading } from "../features/loadingSlice";
 import { request } from "../service/request";
@@ -30,6 +29,7 @@ const BaseContainer = ({ children }: IBaseContainer) => {
   }, [dispatch, page]);
 
   const goBackGHandle = () => window.history.back();
+
   return (
     <>
       <Toaster position="top-right" reverseOrder={false} />

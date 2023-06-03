@@ -30,6 +30,10 @@ const UserList = () => {
     fetchData();
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const linkHandler = (id: string) => {
     navigate(`users/${id}`);
   };
