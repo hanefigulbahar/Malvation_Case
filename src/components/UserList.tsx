@@ -34,10 +34,6 @@ const UserList = () => {
     navigate(`users/${id}`);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <>
       <table className="w-full px-4 text-sm text-left text-gray-500 dark:text-gray-400">

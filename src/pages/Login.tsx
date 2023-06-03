@@ -6,14 +6,7 @@ import { request } from "../service/request";
 import { loginUser } from "../features/autUserSlice";
 import { useEffect } from "react";
 import { themeChanger } from "../utils/themaChanger";
-
-interface ILogin {
-  accessToken: string;
-  user: {
-    email: string;
-    password: string;
-  };
-}
+import { AuthUser } from "../types/users";
 
 interface Inputs {
   email: string;
@@ -31,14 +24,23 @@ export const Login = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const login: ILogin = await request("http://localhost:3000/login", "POST", {
-      email: data.email,
-      password: data.password,
-    });
+    const login: AuthUser = await request(
+      "http://localhost:3000/login",
+      "POST",
+      {
+        email: data.email,
+        password: data.password,
+      }
+    );
     if (!login.accessToken) {
       toast.error("An error occurred during the login process!");
     } else {
-      dispatch(loginUser(login));
+      dispatch(
+        loginUser({
+          accessToken: login.accessToken,
+          user: login.user,
+        })
+      );
       navigate("/");
     }
   };

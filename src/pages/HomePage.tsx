@@ -8,8 +8,7 @@ import Loading from "../components/Loading";
 function HomePage() {
   const authUserToken = useAppSelector((state) => state.autUser.accessToken);
   const loading = useAppSelector((state) => state.loading.isLoading);
-  const authUser = useAppSelector((state) => state.autUser.user);
-  console.log(authUser);
+
   return (
     <>
       {authUserToken ? (

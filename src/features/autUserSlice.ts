@@ -1,21 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { AuthUser } from "../types/users";
 
-const storeUser = JSON.parse(
-  window.localStorage.getItem("user") || "null"
-) as AuthUser;
+const storeUser: string | null = window.localStorage.getItem("user");
+
+const parsingStoreUser: AuthUser = storeUser ? JSON.parse(storeUser) : null;
 
 const initialState: AuthUser = {
-  accessToken: storeUser?.accessToken,
-  user: storeUser?.user,
+  accessToken: parsingStoreUser?.accessToken,
+  user: parsingStoreUser?.user,
 };
 
 const autUserSlice = createSlice({
   name: "autUser",
   initialState,
   reducers: {
-    loginUser: (state, action) => {
-      state.user = action.payload;
+    loginUser: (state, action: PayloadAction<AuthUser>) => {
+      state.user = action.payload.user;
+      state.accessToken = action.payload.accessToken;
       window.localStorage.setItem("user", JSON.stringify(state.user));
     },
   },
