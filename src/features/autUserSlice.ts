@@ -3,7 +3,7 @@ import { AuthUser } from "../types/users";
 
 const storeUser: string | null = window.localStorage.getItem("user");
 
-const parsingStoreUser: AuthUser = storeUser ? JSON.parse(storeUser) : null;
+const parsingStoreUser = storeUser ? JSON.parse(storeUser) : null;
 
 const initialState: AuthUser = {
   accessToken: parsingStoreUser?.accessToken,
@@ -17,7 +17,7 @@ const autUserSlice = createSlice({
     loginUser: (state, action: PayloadAction<AuthUser>) => {
       state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
-      window.localStorage.setItem("user", JSON.stringify(state.user));
+      window.localStorage.setItem("user", JSON.stringify(state));
     },
   },
 });
