@@ -17,6 +17,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "users/:id",
+        errorElement: <ErrorPage />,
         element: <UserDetail />,
       },
     ],

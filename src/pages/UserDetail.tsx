@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { request } from "../service/request";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -11,12 +11,14 @@ import { toast } from "react-hot-toast";
 import { User } from "../types/users";
 import { userUpdateSchema } from "../validation";
 import { yupResolver } from "@hookform/resolvers/yup";
+import ErrorPage from "./Error";
 
 type FormData = Yup.InferType<typeof userUpdateSchema>;
 
 const UserDetail = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const authUserToken = useAppSelector((state) => state.autUser.accessToken);
   const selectedUser = useAppSelector((state) => state.selectedUser.user);
@@ -36,7 +38,11 @@ const UserDetail = () => {
       `http://localhost:3000${location.pathname}`,
       "GET"
     );
-    dispatch(updateUser(selectedData));
+    if (selectedData.id !== undefined) {
+      dispatch(updateUser(selectedData));
+    } else {
+      navigate("/error");
+    }
   };
 
   const {
@@ -48,8 +54,6 @@ const UserDetail = () => {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data: FormData) => {
-    console.log(data);
-
     const updateUserStatus = await request(
       `http://localhost:3000${location.pathname}`,
       "PATCH",

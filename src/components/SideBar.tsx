@@ -131,7 +131,7 @@ const SideBar = () => {
                       ? "hidden"
                       : "flex-1 ml-3 whitespace-nowrap px-3 hidden md:inline "
                   }>
-                  Logout
+                  Sign out
                 </span>
               </div>
             </button>
