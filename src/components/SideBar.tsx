@@ -38,7 +38,7 @@ const SideBar = () => {
   return (
     <aside
       id="default-sidebar"
-      className="w-max sticky top-0 h-screen text-center "
+      className="w-max sticky top-0 h-screen text-center"
       aria-label="Sidebar">
       <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
         <ul className="space-y-3 font-medium">
@@ -75,7 +75,7 @@ const SideBar = () => {
                   className={
                     hamburgerMenu
                       ? "hidden"
-                      : "flex-1 ml-3 whitespace-nowrap px-3 "
+                      : "flex-1 ml-3 whitespace-nowrap px-3 hidden md:inline "
                   }>
                   Dashboard
                 </span>
@@ -95,7 +95,7 @@ const SideBar = () => {
                     className={
                       hamburgerMenu
                         ? "hidden"
-                        : "flex-1 ml-3 whitespace-nowrap px-3"
+                        : "flex-1 ml-3 whitespace-nowrap px-3 hidden md:inline "
                     }>
                     Light
                   </span>
@@ -109,7 +109,7 @@ const SideBar = () => {
                     className={
                       hamburgerMenu
                         ? "hidden"
-                        : "flex-1 ml-3 whitespace-nowrap px-3"
+                        : "flex-1 ml-3 whitespace-nowrap px-3 hidden md:inline "
                     }>
                     Dark
                   </span>
@@ -129,7 +129,7 @@ const SideBar = () => {
                   className={
                     hamburgerMenu
                       ? "hidden"
-                      : "flex-1 ml-3 whitespace-nowrap px-3 "
+                      : "flex-1 ml-3 whitespace-nowrap px-3 hidden md:inline "
                   }>
                   Logout
                 </span>

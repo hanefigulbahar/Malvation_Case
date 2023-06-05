@@ -14,7 +14,6 @@ const paginationSlice = createSlice({
   reducers: {
     updatePage: (state, action) => {
       state.page = action.payload;
-
       localStorage.setItem("page", state.page.toLocaleString());
     },
   },

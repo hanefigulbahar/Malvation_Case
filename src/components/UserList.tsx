@@ -5,17 +5,21 @@ import { toast } from "react-hot-toast";
 import { BsTrashFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { isLoading } from "../features/loadingSlice";
-import { useEffect } from "react";
 
 const UserList = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const allUsers = useAppSelector((state) => state.allData.users);
 
-  const fetchData = async () => {
-    const users = await request(`http://localhost:3000/users`, "GET");
+  const allUsers = useAppSelector((state) => state.allData.users);
+  const page = useAppSelector((state) => state.pagination.page);
+
+  const fetchData = async (page: number) => {
+    dispatch(isLoading(true));
+    const users = await request(
+      `http://localhost:3000/users?_page=${page}`,
+      "GET"
+    );
     dispatch(allData(users));
-    dispatch(isLoading(false));
   };
 
   const deleteUserHandle = async (id: number) => {
@@ -27,12 +31,9 @@ const UserList = () => {
     deleteStatus === 200
       ? toast.success("Deletion successful")
       : toast.error("Deletion failed");
-    fetchData();
+    fetchData(page);
+    dispatch(isLoading(false));
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const linkHandler = (id: string) => {
     navigate(`users/${id}`);
