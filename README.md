@@ -48,6 +48,26 @@ This web application provides;
 
 `npm run dev`
 
+4. You can use these users for login.
+
+```
+Name: Trycia Fadel
+Mail: dpierrof@vimeo.com
+Password: Vru55Y4tufI4
+```
+
+```
+Name: Jeanne Halvorson
+Mail: kminchelle@qq.com
+Password: 0lelplR
+```
+
+```
+Name: Enoch Lynch
+Mail: mturleyd@tumblr.com
+Password: GyLnCB8gNIp
+```
+
 This project was developed using [Vite](https://vitejs.dev) tool.
 
 ## :memo: License 
