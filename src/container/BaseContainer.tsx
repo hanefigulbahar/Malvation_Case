@@ -8,7 +8,6 @@ interface IBaseContainer {
 }
 const BaseContainer = ({ children }: IBaseContainer) => {
   const location = useLocation();
-
   const goBackGHandle = () => window.history.back();
 
   return (

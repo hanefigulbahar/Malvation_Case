@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useAppSelector } from "../store/hooks";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const authUser = useAppSelector((state) => state.autUser.user);
   const [navbarDropdown, setNavbarDropdown] = useState(false);
 
@@ -9,33 +13,39 @@ const Header = () => {
     setNavbarDropdown(!navbarDropdown);
   };
 
+  const logoutHandle = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("status");
+    navigate("/login");
+  };
+
   return (
     <nav className="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a
-          href="#"
+        <Link
+          to={"/"}
           className="flex items-center bg-sky-600 dark:bg-sky-800 rounded-lg">
           <img
             src="https://malwation.com/wp-content/uploads/2021/10/logo_white.png"
             className="h-5 m-3 "
             alt="Malwation Logo"
           />
-        </a>
+        </Link>
         <div className="block" id="navbar-solid-bg">
           <ul className="flex justify-center items-center font-medium rounded-lg bg-gray-50 flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
             <li>
-              <a
-                href="#"
+              <Link
+                to={"#"}
                 className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-sky-600 md:p-0 dark:text-white md:dark:hover:text-sky-600 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
                 Dashboard
-              </a>
+              </Link>
             </li>
             <li>
-              <a
-                href="#"
+              <Link
+                to={"#"}
                 className="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-sky-600 md:p-0 dark:text-white md:dark:hover:text-sky-600 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
                 About
-              </a>
+              </Link>
             </li>
             <li>
               <div className="flex relative items-center md:order-2">
@@ -71,18 +81,11 @@ const Header = () => {
                   </div>
                   <ul className="py-2" aria-labelledby="user-menu-button">
                     <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-500 dark:text-gray-200 dark:hover:text-white">
-                        Profile
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-500 dark:text-gray-200 dark:hover:text-white">
+                      <button
+                        onClick={logoutHandle}
+                        className="w-full flex  px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-500 dark:text-gray-200 dark:hover:text-white">
                         Sign out
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
