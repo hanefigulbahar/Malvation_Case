@@ -1,6 +1,6 @@
+import * as Yup from "yup";
 import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-
 import { request } from "../service/request";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -9,15 +9,10 @@ import { isLoading } from "../features/loadingSlice";
 import Loading from "../components/Loading";
 import { toast } from "react-hot-toast";
 import { User } from "../types/users";
+import { userUpdateSchema } from "../validation";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-type Inputs = {
-  firstName: string | null;
-  lastName: string | null;
-  email: string | null;
-  phone: number | null;
-  role: string | null;
-  active: boolean | null;
-};
+type FormData = Yup.InferType<typeof userUpdateSchema>;
 
 const UserDetail = () => {
   const dispatch = useAppDispatch();
@@ -27,26 +22,34 @@ const UserDetail = () => {
   const selectedUser = useAppSelector((state) => state.selectedUser.user);
   const loading = useAppSelector((state) => state.loading.isLoading);
 
-  const { register, handleSubmit } = useForm<Inputs>();
+  useEffect(() => {
+    dispatch(isLoading(true));
+    selectedUserFetch();
+    dispatch(isLoading(false));
 
+    return () => {
+      dispatch(updateUser(null));
+    };
+  }, []);
   const selectedUserFetch = async () => {
     const selectedData: User = await request(
       `http://localhost:3000${location.pathname}`,
       "GET"
     );
     dispatch(updateUser(selectedData));
-    dispatch(isLoading(false));
   };
-  useEffect(() => {
-    dispatch(isLoading(true));
-    selectedUserFetch();
 
-    return () => {
-      dispatch(updateUser(null));
-    };
-  }, []);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(userUpdateSchema),
+  });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<FormData> = async (data: FormData) => {
+    console.log(data);
+
     const updateUserStatus = await request(
       `http://localhost:3000${location.pathname}`,
       "PATCH",
@@ -56,7 +59,7 @@ const UserDetail = () => {
         lastName: data.lastName ? data.lastName : selectedUser?.lastName,
         email: data.email ? data.email : selectedUser?.email,
         phone: data.phone ? data.phone : selectedUser?.phone,
-        role: data.role ? data.role : selectedUser?.role,
+        role: data.role,
       }
     );
     if (updateUserStatus === 200) {
@@ -75,86 +78,107 @@ const UserDetail = () => {
               <Loading />
             </div>
           ) : (
-            <form className="w-full p-10 " onSubmit={handleSubmit(onSubmit)}>
-              <div className="relative z-0 w-full mb-6 group ">
+            <form className="w-full p-10  " onSubmit={handleSubmit(onSubmit)}>
+              <div className="relative z-0 w-full mb-10 group ">
                 <input
                   {...register("email")}
-                  placeholder={selectedUser?.email}
-                  type="email"
+                  defaultValue={selectedUser?.email}
                   id="email"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-600 peer"
+                  className={
+                    errors.email
+                      ? "block py-2.5 px-0 w-full text-sm text-red-500 bg-transparent border-0 border-b-2 border-rose-400 appearance-none dark:text-white dark:border-rose-600 dark:focus:border-rose-500 focus:outline-none focus:ring-0 focus:border-rose-600 peer"
+                      : "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-600 peer"
+                  }
                 />
                 <label
                   htmlFor="email"
                   className="font-medium absolute text-sm  dark:text-gray-400 duration-300 transform top-3 -z-10 origin-[0] text-sky-600 peer:dark:text-sky-500 scale-100 -translate-y-6">
                   Email address
                 </label>
+                <span className="absolute left-0 text-xs text-red-500 dark:text-rose-400">
+                  {errors.email?.message}
+                </span>
               </div>
               <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-6 group">
+                <div className="relative z-0 w-full mb-10 group">
                   <input
                     {...register("firstName")}
-                    placeholder={selectedUser?.firstName}
-                    type="text"
+                    defaultValue={selectedUser?.firstName}
                     id="first_name"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-600 peer"
+                    className={
+                      errors.firstName
+                        ? "block py-2.5 px-0 w-full text-sm text-red-500 bg-transparent border-0 border-b-2 border-rose-400 appearance-none dark:text-white dark:border-rose-600 dark:focus:border-rose-500 focus:outline-none focus:ring-0 focus:border-rose-600 peer"
+                        : "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-600 peer"
+                    }
                   />
                   <label
                     htmlFor="first_name"
                     className="font-medium absolute text-sm  dark:text-gray-400 duration-300 transform top-3 -z-10 origin-[0] text-sky-600 peer:dark:text-sky-500 scale-100 -translate-y-6">
                     First name
                   </label>
+                  <span className="absolute left-0 text-xs text-red-500 dark:text-rose-400">
+                    {errors.firstName?.message}
+                  </span>
                 </div>
-                <div className="relative z-0 w-full mb-6 group">
+                <div className="relative z-0 w-full mb-10 group">
                   <input
                     {...register("lastName")}
-                    placeholder={selectedUser?.lastName}
-                    type="text"
+                    defaultValue={selectedUser?.lastName}
                     id="last_name"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-600 peer"
+                    className={
+                      errors.lastName
+                        ? "block py-2.5 px-0 w-full text-sm text-red-500 bg-transparent border-0 border-b-2 border-rose-400 appearance-none dark:text-white dark:border-rose-600 dark:focus:border-rose-500 focus:outline-none focus:ring-0 focus:border-rose-600 peer"
+                        : "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-600 peer"
+                    }
                   />
                   <label
                     htmlFor="last_name"
                     className="font-medium absolute text-sm  dark:text-gray-400 duration-300 transform top-3 -z-10 origin-[0] text-sky-600 peer:dark:text-sky-500 scale-100 -translate-y-6">
                     Last name
                   </label>
+                  <span className="absolute left-0 text-xs text-red-500 dark:text-rose-400">
+                    {errors.lastName?.message}
+                  </span>
                 </div>
               </div>
-              <div className="relative z-0 w-full mb-6 group">
+              <div className="relative z-0 w-full mb-10 group">
                 <input
                   {...register("phone")}
-                  placeholder={selectedUser?.phone}
-                  type="phone"
-                  name="phone"
+                  defaultValue={selectedUser?.phone}
                   id="phone"
-                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-600 peer"
+                  className={
+                    errors.phone
+                      ? "block py-2.5 px-0 w-full text-sm text-red-500 bg-transparent border-0 border-b-2 border-rose-400 appearance-none dark:text-white dark:border-rose-600 dark:focus:border-rose-500 focus:outline-none focus:ring-0 focus:border-rose-600 peer"
+                      : "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-sky-500 focus:outline-none focus:ring-0 focus:border-sky-600 peer"
+                  }
                 />
                 <label
-                  htmlFor="email"
+                  htmlFor="phone"
                   className="font-medium absolute text-sm  dark:text-gray-400 duration-300 transform top-3 -z-10 origin-[0] text-sky-600 peer:dark:text-sky-500 scale-100 -translate-y-6">
                   Phone number
                 </label>
+                <span className="absolute left-0 text-xs text-red-500 dark:text-rose-400">
+                  {errors.phone?.message}
+                </span>
               </div>
               <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-6 group">
+                <div className="relative z-0 w-full mb-10 group">
                   <select
                     {...register("role")}
+                    defaultValue={selectedUser?.role}
                     id="select"
                     className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                    <option value="user">User</option>
                     <option value="admin">Admin</option>
+                    <option value="user">User</option>
                   </select>
                 </div>
 
-                <div className="flex justify-center items-center gap-3 z-0 w-full mb-6 group">
-                  <label
-                    className="relative inline-flex items-center text-gray-500 dark:text-gray-50"
-                    htmlFor="">
+                <div className="flex justify-end items-center gap-3 z-0 w-full mb-6 group md:justify-center">
+                  <label className="relative inline-flex items-center text-gray-500 dark:text-gray-50">
                     Active
                   </label>
                   <label className="relative inline-flex items-centercursor-pointer">
                     <input
-                      placeholder="Active"
                       {...register("active")}
                       defaultChecked={selectedUser?.active}
                       type="checkbox"

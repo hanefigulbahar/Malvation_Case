@@ -1,6 +1,6 @@
 const Loading = () => {
   return (
-    <div className="flex items-center justify-center w-full h-full border border-gray-100 rounded-lg bg-gray-50 shadow-md dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex items-center justify-center w-full h-full border  rounded-lg bg-gray-50 shadow-md dark:bg-gray-800 dark:border-gray-800">
       <div role="status">
         <svg
           aria-hidden="true"

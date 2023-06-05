@@ -1,32 +1,13 @@
-import React, { useEffect } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import Pagination from "../components/Pagination";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { isLoading } from "../features/loadingSlice";
-import { request } from "../service/request";
-import { allData } from "../features/usersSlice";
 import { Toaster } from "react-hot-toast";
+
 interface IBaseContainer {
   children: React.ReactNode;
 }
 const BaseContainer = ({ children }: IBaseContainer) => {
-  const dispatch = useAppDispatch();
   const location = useLocation();
-  const page = useAppSelector((state) => state.pagination.page);
-
-  const fetchData = async (page: number) => {
-    const users = await request(
-      `http://localhost:3000/users?_page=${page}`,
-      "GET"
-    );
-    dispatch(allData(users));
-    dispatch(isLoading(false));
-  };
-  useEffect(() => {
-    dispatch(isLoading(true));
-    fetchData(page);
-  }, [dispatch, page]);
 
   const goBackGHandle = () => window.history.back();
 
